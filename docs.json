@@ -1,0 +1,28 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "GatherMonk User Manual",
+  "colors": {
+    "primary": "#2A7AE2",
+    "light": "#38BDF8",
+    "dark": "#1A3C5E"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "User Manual",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["Request"]
+          },
+
+          {
+            "group": "Form",
+            "pages": ["Form"]
+          }
+        ]
+      }
+    ]
+  }
+}
