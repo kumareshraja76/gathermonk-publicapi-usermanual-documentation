@@ -2,6 +2,11 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "GatherMonk",
+  "logo": {
+    "dark": "/manual/help-guide/logo_dark.png",
+    "light": "/manual/help-guide/logo_white.png"
+  },
+  "favicon": "/images/favicon.png",
   "colors": {
     "primary": "#2A7AE2",
     "light": "#38BDF8",
@@ -10,69 +15,66 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "GatherMonk",
+        "tab": "Manual",
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["overview"]
+            "pages": ["manual/overview"]
           },
           {
             "group": "Part A - Requests",
             "pages": [
-              "requests/request-intro",
-              "requests/request-dashboard",
-              "requests/create-request",
-              "requests/recipient-invites",
-              "requests/edit-request",
-              "requests/review-approve-submission",
-              "requests/delete-request",
-              "requests/client-exp",
-              "requests/requests-faq"
+              "manual/requests/request-intro",
+              "manual/requests/request-dashboard",
+              "manual/requests/create-request",
+              "manual/requests/recipient-invites",
+              "manual/requests/edit-request",
+              "manual/requests/review-approve-submission",
+              "manual/requests/delete-request",
+              "manual/requests/client-exp",
+              "manual/requests/requests-faq"
             ]
           },
           {
-            "group": "Part B - Forms ",
+            "group": "Part B - Forms",
             "pages": [
-              "forms/form-intro",
-              "forms/form-dashboard",
-              "forms/build-publish",
-              "forms/share-form",
-              "forms/form-exp",
-              "forms/forms-faq"
+              "manual/forms/form-intro",
+              "manual/forms/form-dashboard",
+              "manual/forms/build-publish",
+              "manual/forms/share-form",
+              "manual/forms/form-exp",
+              "manual/forms/forms-faq",
+              "manual/forms/forms-compare"
             ]
           },
           {
             "group": "Part C - Transfers",
             "pages": [
-              "transfers/transfer-intro",
-              "transfers/transfer-dashboard",
-              "transfers/create-transfer",
-              "transfers/edit-transfer",
-              "transfers/transfers-faq"
+              "manual/transfers/transfer-intro",
+              "manual/transfers/transfer-dashboard",
+              "manual/transfers/create-transfer",
+              "manual/transfers/edit-transfer",
+              "manual/transfers/transfers-faq"
             ]
           },
           {
             "group": "Part D - Portals",
             "pages": [
-              "portals/portal-intro",
-              "portals/portal-dashboard",
-              "portals/create-portal",
-              "portals/portal-setting",
-              "portals/manage-client",
-              "portals/portal-in-request",
-              "portals/guide-portal",
-              "portals/share-portal",
-              "portals/portal-exp",
-              "portals/portal-faq"
+              "manual/portals/portal-intro",
+              "manual/portals/portal-dashboard",
+              "manual/portals/create-portal",
+              "manual/portals/portal-setting",
+              "manual/portals/manage-client",
+              "manual/portals/portal-in-request",
+              "manual/portals/guide-portal",
+              "manual/portals/share-portal",
+              "manual/portals/portal-exp",
+              "manual/portals/portal-faq"
             ]
           },
           {
-            "group": "Forms",
-            "pages": ["forms-compare"]
-          },
-          {
             "group": "Appendix",
-            "pages": ["appendix"]
+            "pages": ["manual/appendix"]
           }
         ]
       },
@@ -81,11 +83,7 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["overview"]
-          },
-          {
-            "group": "Appendix",
-            "pages": ["appendix"]
+            "pages": ["api/Public-api"]
           }
         ]
       }
