@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "GatherMonk User Manual",
+  "name": "GatherMonk",
   "colors": {
     "primary": "#2A7AE2",
     "light": "#38BDF8",
@@ -10,16 +10,82 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "User Manual",
+        "tab": "GatherMonk",
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["Request"]
+            "pages": ["overview"]
           },
-
           {
-            "group": "Form",
-            "pages": ["Form"]
+            "group": "Part A - Requests",
+            "pages": [
+              "requests/request-intro",
+              "requests/request-dashboard",
+              "requests/create-request",
+              "requests/recipient-invites",
+              "requests/edit-request",
+              "requests/review-approve-submission",
+              "requests/delete-request",
+              "requests/client-exp",
+              "requests/requests-faq"
+            ]
+          },
+          {
+            "group": "Part B - Forms ",
+            "pages": [
+              "forms/form-intro",
+              "forms/form-dashboard",
+              "forms/build-publish",
+              "forms/share-form",
+              "forms/form-exp",
+              "forms/forms-faq"
+            ]
+          },
+          {
+            "group": "Part C - Transfers",
+            "pages": [
+              "transfers/transfer-intro",
+              "transfers/transfer-dashboard",
+              "transfers/create-transfer",
+              "transfers/edit-transfer",
+              "transfers/transfers-faq"
+            ]
+          },
+          {
+            "group": "Part D - Portals",
+            "pages": [
+              "portals/portal-intro",
+              "portals/portal-dashboard",
+              "portals/create-portal",
+              "portals/portal-setting",
+              "portals/manage-client",
+              "portals/portal-in-request",
+              "portals/guide-portal",
+              "portals/share-portal",
+              "portals/portal-exp",
+              "portals/portal-faq"
+            ]
+          },
+          {
+            "group": "Forms",
+            "pages": ["forms-compare"]
+          },
+          {
+            "group": "Appendix",
+            "pages": ["appendix"]
+          }
+        ]
+      },
+      {
+        "tab": "API",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["overview"]
+          },
+          {
+            "group": "Appendix",
+            "pages": ["appendix"]
           }
         ]
       }
