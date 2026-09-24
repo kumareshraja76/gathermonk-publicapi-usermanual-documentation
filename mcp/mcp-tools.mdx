@@ -1,0 +1,113 @@
+---
+title: MCP Tools
+description: 58 tools exposed to connected AI assistants via the GatherMonk MCP server, grouped by what they touch.
+---
+
+# GatherMonk Tool Registry
+
+Everything an assistant can read, write, or delete across requests, portals, transfers, and the form builder.
+
+**58 tools total**
+
+## Requests & forms
+
+| Tool                             | Description                                          | Read | Write | Delete |
+| -------------------------------- | ---------------------------------------------------- | :--: | :---: | :----: |
+| `list-gathermonk-requests`       | List GatherMonk requests for the authenticated user. |  ✓   |       |        |
+| `list-gathermonk-forms`          | List GatherMonk forms for the authenticated user.    |  ✓   |       |        |
+| `create-gathermonk-request`      | Create a new GatherMonk request.                     |      |   ✓   |        |
+| `create-gathermonk-form`         | Create a new GatherMonk form.                        |      |   ✓   |        |
+| `list-gathermonk-form-requests`  | List Gather Hub requests or forms.                   |  ✓   |       |        |
+| `delete-gathermonk-form-request` | Delete a Gather Hub request or form.                 |      |       |   ✓    |
+
+## Portals
+
+| Tool                                         | Description                                         | Read | Write | Delete |
+| -------------------------------------------- | --------------------------------------------------- | :--: | :---: | :----: |
+| `list-gathermonk-portals`                    | List GatherMonk portals for the authenticated user. |  ✓   |       |        |
+| `create-gathermonk-portal`                   | Create a new GatherMonk portal.                     |      |   ✓   |        |
+| `update-gathermonk-portal`                   | Update an existing GatherMonk portal.               |      |   ✓   |        |
+| `delete-gathermonk-portal`                   | Delete a GatherMonk portal.                         |      |       |   ✓    |
+| `add-gathermonk-contacts-to-portal`          | Add contacts to a GatherMonk portal.                |      |   ✓   |        |
+| `map-gathermonk-request-to-portal`           | Map a GatherMonk request to a portal.               |      |   ✓   |        |
+| `map-gathermonk-contacts-to-portal-requests` | Map contacts to requests in a GatherMonk portal.    |      |   ✓   |        |
+
+## Transfers & batches
+
+| Tool                          | Description                                           | Read | Write | Delete |
+| ----------------------------- | ----------------------------------------------------- | :--: | :---: | :----: |
+| `list-gathermonk-transfers`   | List GatherMonk transfers for the authenticated user. |  ✓   |       |        |
+| `create-gathermonk-transfer`  | Create a GatherMonk transfer.                         |      |   ✓   |        |
+| `update-gathermonk-transfer`  | Update an existing GatherMonk transfer.               |      |   ✓   |        |
+| `delete-gathermonk-transfer`  | Delete a GatherMonk transfer.                         |      |       |   ✓    |
+| `get-gathermonk-batch-status` | Get the status of a submitted batch.                  |  ✓   |       |        |
+
+## Contacts
+
+| Tool                                     | Description                                 | Read | Write | Delete |
+| ---------------------------------------- | ------------------------------------------- | :--: | :---: | :----: |
+| `create-gathermonk-contact`              | Create one or more contacts.                |      |   ✓   |        |
+| `list-gathermonk-contacts`               | List or search contacts.                    |  ✓   |       |        |
+| `get-gathermonk-contact`                 | Get details for a single contact.           |  ✓   |       |        |
+| `update-gathermonk-contact`              | Update an existing contact.                 |      |   ✓   |        |
+| `add-gathermonk-contact-to-request`      | Add a contact to a Gather Hub request.      |      |   ✓   |        |
+| `remove-gathermonk-contact-from-request` | Remove a contact from a Gather Hub request. |      |   ✓   |        |
+
+## Communications
+
+| Tool                                       | Description                                             | Read | Write | Delete |
+| ------------------------------------------ | ------------------------------------------------------- | :--: | :---: | :----: |
+| `send-gathermonk-email`                    | Send an email using a configured communication trigger. |      |   ✓   |        |
+| `list-gathermonk-triggers`                 | List available communication triggers.                  |  ✓   |       |        |
+| `save-gathermonk-trigger`                  | Create or update a communication trigger.               |      |   ✓   |        |
+| `delete-gathermonk-trigger`                | Delete a user communication trigger override.           |      |       |   ✓    |
+| `save-gathermonk-communication-template`   | Create or update a communication template.              |      |   ✓   |        |
+| `delete-gathermonk-communication-template` | Delete a communication template.                        |      |       |   ✓    |
+
+## Responses
+
+| Tool                                | Description                                 | Read | Write | Delete |
+| ----------------------------------- | ------------------------------------------- | :--: | :---: | :----: |
+| `list-gathermonk-form-templates`    | List available Gather Hub templates.        |  ✓   |       |        |
+| `list-gathermonk-responses`         | List Gather Hub responses.                  |  ✓   |       |        |
+| `delete-gathermonk-response`        | Delete a Gather Hub response.               |      |       |   ✓    |
+| `save-gathermonk-response`          | Save or update response data.               |      |   ✓   |        |
+| `save-gathermonk-bulk-response`     | Save multiple response data entries.        |      |   ✓   |        |
+| `change-gathermonk-response-status` | Change response data status.                |      |   ✓   |        |
+| `export-gathermonk-response`        | Export a Gather Hub response as PDF or CSV. |  ✓   |       |        |
+
+## Reminders
+
+| Tool                        | Description                             | Read | Write | Delete |
+| --------------------------- | --------------------------------------- | :--: | :---: | :----: |
+| `list-gathermonk-reminders` | List Gather Hub reminders.              |  ✓   |       |        |
+| `save-gathermonk-reminder`  | Create or update a Gather Hub reminder. |      |   ✓   |        |
+
+## Form builder
+
+| Tool                                    | Description                               | Read | Write | Delete |
+| --------------------------------------- | ----------------------------------------- | :--: | :---: | :----: |
+| `save-gathermonk-form-field`            | Create or update a form field.            |      |   ✓   |        |
+| `delete-gathermonk-form-field`          | Delete a form field.                      |      |       |   ✓    |
+| `sort-gathermonk-form-fields`           | Reorder form fields.                      |      |   ✓   |        |
+| `save-gathermonk-form-group`            | Create or update a form group.            |      |   ✓   |        |
+| `sort-gathermonk-form-groups`           | Reorder form groups.                      |      |   ✓   |        |
+| `delete-gathermonk-form-group`          | Delete a form group and its fields.       |      |       |   ✓    |
+| `save-gathermonk-form-page`             | Create or update a form page.             |      |   ✓   |        |
+| `sort-gathermonk-form-pages`            | Reorder form pages.                       |      |   ✓   |        |
+| `delete-gathermonk-form-page`           | Delete a form page and its contents.      |      |       |   ✓    |
+| `change-gathermonk-form-request-status` | Change the published status of a request. |      |   ✓   |        |
+
+## Request builder
+
+| Tool                                | Description                         | Read | Write | Delete |
+| ----------------------------------- | ----------------------------------- | :--: | :---: | :----: |
+| `save-gathermonk-request-page`      | Create or update a request page.    |      |   ✓   |        |
+| `sort-gathermonk-request-pages`     | Reorder request pages.              |      |   ✓   |        |
+| `delete-gathermonk-request-page`    | Delete a request page.              |      |       |   ✓    |
+| `save-gathermonk-request-section`   | Create or update a request section. |      |   ✓   |        |
+| `sort-gathermonk-request-sections`  | Reorder request sections.           |      |   ✓   |        |
+| `delete-gathermonk-request-section` | Delete a request section.           |      |       |   ✓    |
+| `save-gathermonk-request-field`     | Create or update a request field.   |      |   ✓   |        |
+| `sort-gathermonk-request-fields`    | Reorder request fields.             |      |   ✓   |        |
+| `delete-gathermonk-request-field`   | Delete a request field.             |      |       |   ✓    |
