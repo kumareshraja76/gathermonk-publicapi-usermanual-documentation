@@ -83,7 +83,7 @@
         "groups": [
           {
             "group": "Getting Started",
-            "pages": ["api/Public-api"]
+            "pages": ["api/public-api"]
           }
         ]
       }
