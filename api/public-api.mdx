@@ -1,11 +1,6 @@
----
-title: "GatherMonk Public API"
-sidebarTitle: "Public API"
-description: "Explore the GatherMonk Public API for securely creating and managing resources through authenticated API requests."
-icon: "code"
----
-
 # GatherMonk Public API Documentation
+
+This document describes the public batch ingestion and processing endpoints exposed by [routes/publicapi.php](file:///var/www/gathermonk/api-gathermonk/routes/publicapi.php).
 
 ---
 
@@ -13,17 +8,17 @@ icon: "code"
 
 All public API routes are prefixed under `/publicapi`:
 
-| Environment           | Base URL                    | Public API Ingestion Endpoint                |
-| :-------------------- | :-------------------------- | :------------------------------------------- |
-| **Live / Production** | `https:/api.gathermonk.com` | `https:/api.gathermonk.com/publicapi/create` |
+| Environment | Base URL | Public API Ingestion Endpoint |
+| :--- | :--- | :--- |
+| **Live / Production** | `https://api.gathermonk.com` | `https://api.gathermonk.com/publicapi/create` |
 
 ### Supported Endpoints
 
-| Method | Endpoint       | Description                                                                  | Content-Type          |
-| :----- | :------------- | :--------------------------------------------------------------------------- | :-------------------- |
-| `POST` | `/create`      | Batch upload & creation of resources ( GatherMonk Forms, Portals, Transfers) | `multipart/form-data` |
-| `GET`  | `/status/{id}` | Check batch execution status and retrieve created resource URLs & IDs        | `application/json`    |
-| `POST` | `/batches`     | _(Legacy Alias)_ Identical to `/create`                                      | `multipart/form-data` |
+| Method | Endpoint | Description | Content-Type |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/create` | Batch upload & creation of resources (GatherMonk Forms, Virtual Spaces, Portals, Transfers) | `multipart/form-data` |
+| `GET` | `/status/{id}` | Check batch execution status and retrieve created resource URLs & IDs | `application/json` |
+| `POST` | `/batches` | *(Legacy Alias)* Identical to `/create` | `multipart/form-data` |
 
 ---
 
@@ -36,43 +31,41 @@ X-PUBLIC-KEY: your_public_access_key_here
 Accept: application/json
 ```
 
-- **`X-PUBLIC-KEY`** _(Header, Required)_: The user's public access API key. This is handled by the `publicapi` middleware group ([CheckPublicUser](file://var/www/gathermonk/api-gathermonk/app/Http/Middleware/CheckPublicUser.php)), which validates the key and automatically attaches the authenticated user to the request.
-- **No `uid` in payload**: Because authentication is handled securely at the middleware layer via `X-PUBLIC-KEY`, passing `uid` in the JSON metadata payload is **not required**.
+* **`X-PUBLIC-KEY`** *(Header, Required)*: The user's public access API key. This is handled by the `publicapi` middleware group ([CheckPublicUser](file:///var/www/gathermonk/api-gathermonk/app/Http/Middleware/CheckPublicUser.php)), which validates the key and automatically attaches the authenticated user to the request.
+* **No `uid` in payload**: Because authentication is handled securely at the middleware layer via `X-PUBLIC-KEY`, passing `uid` in the JSON metadata payload is **not required**.
 
 If the key is missing or invalid, the API returns:
-
 ```json
 {
   "message": "Public access key missing"
 }
 ```
-
-_(HTTP `401 Unauthorized`)_
+*(HTTP `401 Unauthorized`)*
 
 ---
 
 ## 3. Batch Resource Processor Endpoints
 
-Managed by [BatchProcessorController](file://var/www/gathermonk/api-gathermonk/app/Http/Controllers/Api/Public/BatchProcessorController.php) and dispatched via [ResourceDispatcher](file://var/www/gathermonk/api-gathermonk/app/Processors/ResourceDispatcher.php).
+Managed by [BatchProcessorController](file:///var/www/gathermonk/api-gathermonk/app/Http/Controllers/Api/Public/BatchProcessorController.php) and dispatched via [ResourceDispatcher](file:///var/www/gathermonk/api-gathermonk/app/Processors/ResourceDispatcher.php).
 
 ### 3.1 `POST /create` — Upload & Create Batch Resources
 
-Uploads and processes batches of cards, GatherMonk forms, guide books, microsites (interactive pages), virtual spaces, client portals, and file transfers, alongside binary file attachments (profile photos, thumbnails, banners, brochures, audio, video).
+Uploads and processes batches of GatherMonk forms, virtual spaces, client portals, and file transfers, alongside binary file attachments (profile photos, thumbnails, banners, brochures, audio, video).
 
 #### Request Details
 
-- **Method**: `POST`
-- **URL**: `/publicapi/create` (or `/publicapi/batches`)
-- **Headers**:
-  - `X-PUBLIC-KEY: <your_public_access_key>`
-  - `Accept: application/json`
-- **Content-Type**: `multipart/form-data`
+* **Method**: `POST`
+* **URL**: `/publicapi/create` (or `/publicapi/batches`)
+* **Headers**:
+  * `X-PUBLIC-KEY: <your_public_access_key>`
+  * `Accept: application/json`
+* **Content-Type**: `multipart/form-data`
 
 #### Multipart Form Fields
 
-| Field Name          | Type              | Required | Description                                                                                                              |
-| :------------------ | :---------------- | :------- | :----------------------------------------------------------------------------------------------------------------------- |
-| `metadata`          | `string` (JSON)   | **Yes**  | A valid JSON string containing `resource_type` and the `batch` array of objects.                                         |
+| Field Name | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `metadata` | `string` (JSON) | **Yes** | A valid JSON string containing `resource_type` and the `batch` array of objects. |
 | `<file_field_name>` | `file` / `file[]` | Optional | Binary files matching the aliases defined in `file_references` (e.g., `file_field_1`, `file_field_2`, `transfer_doc_1`). |
 
 #### Top-Level `metadata` JSON Structure
@@ -81,18 +74,17 @@ Uploads and processes batches of cards, GatherMonk forms, guide books, microsite
 {
   "resource_type": "gather-hub",
   "batch": [
-    {
-      /* Resource item payload */
-    }
+    { /* Resource item payload */ }
   ]
 }
 ```
 
-- `resource_type` (`string`, required): One of:
-  - `gather-hub` — GatherMonk: Dynamic feedback, request forms, and multi-page surveys
-  - `portal` — GatherMonk: Client Portals with linked guides and requests
-  - `transfers` — GatherMonk: Secure file transfers with OTP & password protection
-- `batch` (`array`, required): List of resource configurations to process.
+* `resource_type` (`string`, required): One of:
+  * `gather-hub` — GatherMonk: Dynamic feedback, request forms, and multi-page surveys
+  * `virtualspaces` — Virtual 360 tour spaces & hotspots
+  * `portal` — GatherMonk: Client Portals with linked requests and resources
+  * `transfers` — GatherMonk: Secure file transfers with OTP & password protection
+* `batch` (`array`, required): List of resource configurations to process.
 
 #### Response (`202 Accepted`)
 
@@ -107,7 +99,7 @@ Uploads and processes batches of cards, GatherMonk forms, guide books, microsite
         "batch_id": 105,
         "batch_item_id": 210,
         "error": null,
-        "end_url": "https:/api.gathermonk.com/card/abc123xyz",
+        "end_url": "https://api.gathermonk.com/request/req_abc123xyz",
         "id": 412
       }
     }
@@ -123,13 +115,13 @@ Retrieves the processing status, execution logs, and output records for a specif
 
 #### Request Details
 
-- **Method**: `GET`
-- **URL**: `/publicapi/status/{id}`
-- **Headers**:
-  - `X-PUBLIC-KEY: <your_public_access_key>`
-  - `Accept: application/json`
-- **Path Parameters**:
-  - `id` (`integer`, required): The batch ID returned by `POST /create`.
+* **Method**: `GET`
+* **URL**: `/publicapi/status/{id}`
+* **Headers**:
+  * `X-PUBLIC-KEY: <your_public_access_key>`
+  * `Accept: application/json`
+* **Path Parameters**:
+  * `id` (`integer`, required): The batch ID returned by `POST /create`.
 
 #### Response (`200 OK`)
 
@@ -141,8 +133,7 @@ Retrieves the processing status, execution logs, and output records for a specif
   "status": "completed",
   "file_map": [
     {
-      "contact_profile": "/var/www/storage/app/tmp/file_field_1_64f1a2b3c4d5e.png",
-      "thumbnail_image": "/var/www/storage/app/tmp/file_field_2_64f1a2b3c4d5f.jpg"
+      "cover_image": "/var/www/storage/app/tmp/file_field_1_64f1a2b3c4d5e.png"
     }
   ],
   "errors": null,
@@ -153,8 +144,8 @@ Retrieves the processing status, execution logs, and output records for a specif
       "id": 210,
       "batch_request_id": 105,
       "payload": {
-        "card_name": "Senior Software Architect",
-        "card_type": "dc_individual"
+        "title": "Client Onboarding & Project Discovery",
+        "category": "Customer Intake"
       },
       "status": "completed",
       "error": null,
@@ -165,7 +156,11 @@ Retrieves the processing status, execution logs, and output records for a specif
 }
 ```
 
-### 4.2 Resource: `gather-hub` (GatherMonk Requests & Forms)
+---
+
+## 4. Supported Resource Types & Schemas
+
+### 4.1 Resource: `gather-hub` (GatherMonk Requests & Forms)
 
 Creates GatherMonk dynamic feedback forms, intake requests, and client surveys with page hierarchies, question fields, and file upload prompts. Managed by `GhProcessor`.
 
@@ -211,9 +206,9 @@ Creates GatherMonk dynamic feedback forms, intake requests, and client surveys w
 
 ---
 
-### 4.3 Resource: `portal` (GatherMonk Client Portals)
+### 4.2 Resource: `portal` (GatherMonk Client Portals)
 
-Creates branded client portals that aggregate GatherMonk requests, interactive guides, contacts, and custom links into an authenticated workspace. Managed by `PortalProcessor`.
+Creates branded client portals that aggregate GatherMonk requests, contacts, and custom links into an authenticated workspace. Managed by `PortalProcessor`.
 
 #### `metadata` JSON Example
 
@@ -246,7 +241,7 @@ Creates branded client portals that aggregate GatherMonk requests, interactive g
 
 ---
 
-### 4.4 Resource: `transfers` (GatherMonk Secure File Transfers)
+### 4.3 Resource: `transfers` (GatherMonk Secure File Transfers)
 
 Creates secure, trackable file transfers with optional password protection, OTP email validation, and file asset packaging. Managed by `TransferProcessor`.
 
@@ -260,7 +255,7 @@ Creates secure, trackable file transfers with optional password protection, OTP 
       "transfer_title": "Q3 Legal Contracts & Deliverables",
       "description": "Encrypted project archive for Acme Corp Q3 sign-off.",
       "security_type": "password",
-      "password": "Securexxxxxxxxxxxx",
+      "password": "SecurePassword#2026",
       "expiry_days": 14,
       "recipient_emails": ["legal@acme.com", "finance@acme.com"],
       "file_references": {
@@ -273,13 +268,62 @@ Creates secure, trackable file transfers with optional password protection, OTP 
 
 ---
 
+### 4.4 Resource: `virtualspaces`
+
+Creates virtual 360 spaces and VR tour experiences with interactive hotspots. Managed by `Virtual360Processor`.
+
+#### `metadata` JSON Example
+
+```json
+{
+  "resource_type": "virtualspaces",
+  "batch": [
+    {
+      "tour_name": "Executive Briefing Center",
+      "description": "Virtual 360 walkthrough of our briefing facilities.",
+      "status": "published",
+      "file_references": {
+        "panorama_image": "pano_image_1"
+      }
+    }
+  ]
+}
+```
+
+---
+
+## 5. Complete Code Samples
+
+### 5.1 cURL
+
+```bash
+curl -X POST "https://api.gathermonk.com/publicapi/create" \
+  -H "X-PUBLIC-KEY: pk_live_9f8d7e6c5b4a3" \
+  -H "Accept: application/json" \
+  -F 'metadata={
+    "resource_type": "transfers",
+    "batch": [
+      {
+        "transfer_title": "Project Archive",
+        "description": "Secure file transfer bundle",
+        "security_type": "password",
+        "password": "SecurePassword123",
+        "file_references": {
+          "transfer_files": ["archive_file"]
+        }
+      }
+    ]
+  }' \
+  -F "archive_file=@/path/to/archive.zip"
+```
+
 ### 5.2 Python 3 (`requests`)
 
 ```python
 import requests
 import json
 
-BASE_URL = "https:/api.gathermonk.com/publicapi"
+BASE_URL = "https://api.gathermonk.com/publicapi"
 API_KEY = "pk_live_9f8d7e6c5b4a3"
 
 headers = {
@@ -294,7 +338,7 @@ metadata = {
             "transfer_title": "Deliverables Archive",
             "description": "Project deliverables package",
             "security_type": "password",
-            "password": "Securexxxxxxxxxxxxxx",
+            "password": "ArchivePassword123",
             "file_references": {
                 "transfer_files": ["doc1"]
             }
@@ -320,53 +364,38 @@ print("Batch Status:", status_res.json())
 ### 5.3 Node.js / JavaScript (`FormData`)
 
 ```javascript
-const fs = require("fs");
-const axios = require("axios");
-const FormData = require("form-data");
+const fs = require('fs');
+const axios = require('axios');
+const FormData = require('form-data');
 
 async function createBatch() {
   const form = new FormData();
 
   const metadata = {
-    resource_type: "gather-hub",
+    resource_type: 'gather-hub',
     batch: [
       {
-        title: "Q4 Customer Feedback Form",
-        description: "GatherMonk annual client feedback",
+        title: 'Q4 Customer Feedback Form',
+        description: 'GatherMonk annual client feedback',
         fields: [
-          {
-            name: "rating",
-            label: "Overall Satisfaction (1-5)",
-            type: "select",
-            options: ["1", "2", "3", "4", "5"],
-            required: true,
-          },
-          {
-            name: "feedback",
-            label: "Your Thoughts",
-            type: "textarea",
-            required: false,
-          },
-        ],
-      },
-    ],
+          { name: 'rating', label: 'Overall Satisfaction (1-5)', type: 'select', options: ['1', '2', '3', '4', '5'], required: true },
+          { name: 'feedback', label: 'Your Thoughts', type: 'textarea', required: false }
+        ]
+      }
+    ]
   };
 
-  form.append("metadata", JSON.stringify(metadata));
+  form.append('metadata', JSON.stringify(metadata));
 
-  const response = await axios.post(
-    "https:/api.gathermonk.com/publicapi/create",
-    form,
-    {
-      headers: {
-        ...form.getHeaders(),
-        "X-PUBLIC-KEY": "pk_live_9f8d7e6c5b4a3",
-        Accept: "application/json",
-      },
-    },
-  );
+  const response = await axios.post('https://api.gathermonk.com/publicapi/create', form, {
+    headers: {
+      ...form.getHeaders(),
+      'X-PUBLIC-KEY': 'pk_live_9f8d7e6c5b4a3',
+      'Accept': 'application/json'
+    }
+  });
 
-  console.log("Batch Accepted:", response.data);
+  console.log('Batch Accepted:', response.data);
 }
 
 createBatch().catch(console.error);
@@ -380,25 +409,27 @@ createBatch().catch(console.error);
 $ch = curl_init();
 
 $metadata = [
-    'resource_type' => 'gather-hub',
+    'resource_type' => 'transfers',
     'batch' => [
         [
-            'request_name' => 'request name',
-            'request_type' => 'type',
-            'field_name' => 'text',
-            'required' => 'true',
-            'email' => 'michael@example.com',
+            'transfer_title' => 'Deliverables Archive',
+            'description' => 'Secure project deliverables',
+            'security_type' => 'password',
+            'password' => 'ArchivePassword123',
+            'file_references' => [
+                'transfer_files' => ['document_file']
+            ]
         ]
     ]
 ];
 
 $postData = [
     'metadata' => json_encode($metadata),
-    'profile_pic' => new CURLFile('/path/to/michael.png', 'image/png', 'michael.png')
+    'document_file' => new CURLFile('/path/to/spec.pdf', 'application/pdf', 'spec.pdf')
 ];
 
 curl_setopt_array($ch, [
-    CURLOPT_URL => 'https:/api.gathermonk.com/publicapi/create',
+    CURLOPT_URL => 'https://api.gathermonk.com/publicapi/create',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,
     CURLOPT_POSTFIELDS => $postData,
